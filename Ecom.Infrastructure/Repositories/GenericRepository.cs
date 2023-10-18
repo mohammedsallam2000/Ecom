@@ -1,4 +1,6 @@
 ﻿using Ecom.Core.Interfaces;
+using Ecom.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,48 +12,65 @@ namespace Ecom.Infrastructure.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        public GenericRepository()
+        private readonly ApplicationDbContext _context;
+
+        public GenericRepository(ApplicationDbContext context)
         {
-                
+            this._context = context;
         }
-        public Task AddAsync(T entity)
+        public async Task AddAsync(T entity)
         {
-            throw new NotImplementedException();
+           await _context.Set<T>().AddAsync(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public Task DeleteAsync(T id)
+        public async Task DeleteAsync(T id)
         {
-            throw new NotImplementedException();
+            var entity = await _context.Set<T>().FindAsync(id);
+             _context.Set<T>().Remove(entity);
+            await _context.SaveChangesAsync();
         }
 
         public IEnumerable<T> GetAll()
+        => _context.Set<T>().AsNoTracking().ToList();
+
+
+        public async Task<IReadOnlyList<T>> GetAllAsync()
+        => await _context.Set<T>().AsNoTracking().ToListAsync();
+
+        public async Task<IEnumerable<T>> GetAllAsync(params Expression<Func<T, object>>[] includes)
         {
-            throw new NotImplementedException();
+            var query = _context.Set<T>().AsQueryable();
+            // apply any includes
+            foreach (var item in includes)
+            {
+                query = query.Include(item);
+            }
+            return  await  query.ToListAsync();
         }
 
-        public IEnumerable<T> GetAll(params Expression<Func<T, object>>[] includes)
+        public async Task<T> GetAsync(T id)
+        => await _context.Set<T>().FindAsync(id);
+
+        public async Task<T> GetByIdAsync(T id, params Expression<Func<T, object>>[] includes)
         {
-            throw new NotImplementedException();
+            IQueryable<T> Query = _context.Set<T>();
+            foreach (var item in includes)
+            {
+                Query = Query.Include(item);
+            }
+            return await ((DbSet<T>)Query).FindAsync(id);
         }
 
-        public Task<IReadOnlyList<T>> GetAllAsync()
+        public async Task UpdateAsync(T id, T entity)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<T>> GetAllAsync(params Expression<Func<T, object>>[] includes)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<T> GetAsync(T id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task UpdateAsync(T id, T entity)
-        {
-            throw new NotImplementedException();
+            var entityy = await _context.Set<T>().FindAsync(id);
+            if (entityy is not null)
+            {
+                _context.Set<T>().Update(entityy);
+                await _context.SaveChangesAsync();
+            }
+     
         }
     }
 }
