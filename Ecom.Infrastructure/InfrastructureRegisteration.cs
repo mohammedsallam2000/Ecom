@@ -14,6 +14,8 @@ namespace Ecom.Infrastructure
         public static IServiceCollection InfrastructureConfigration(this  IServiceCollection services)
         {
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddScoped<ICategoryRepository,CategoryRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
             return services;
         }
     }
