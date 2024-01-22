@@ -70,7 +70,6 @@ namespace Ecom.Infrastructure.Repositories
                 _context.Set<T>().Update(entityy);
                 await _context.SaveChangesAsync();
             }
-     
         }
     }
 }

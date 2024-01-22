@@ -20,7 +20,8 @@ namespace Ecom.Infrastructure.Data.Config
             builder.HasData(
                 new Category { Id = 1, Name = "Category 1", Description = "One" },
                 new Category { Id = 2, Name = "Category 2", Description = "Two" },
-                new Category { Id = 3, Name = "Category 3", Description = "Three" }
+                new Category { Id = 3, Name = "Category 3", Description = "Three" },
+                new Category { Id = 4, Name = "Category 4", Description = "Four" }
                 );
         }
     }
