@@ -18,9 +18,9 @@ namespace Ecom.Infrastructure.Data.Config
 
             //Seeding
             builder.HasData(
-                new Product { Id = 1, Name = "Product 1", Price = 200,CategoryId = 1 },
-                new Product { Id = 2, Name = "Product 2", Price = 300, CategoryId = 2 },
-                new Product { Id = 3, Name = "Product 3", Price = 500, CategoryId = 1 }
+                new Product { Id = 1, Name = "Product 1", Price = 200,CategoryId = 1,ProductPicture="https://" },
+                new Product { Id = 2, Name = "Product 2", Price = 300, CategoryId = 2, ProductPicture = "https://" },
+                new Product { Id = 3, Name = "Product 3", Price = 500, CategoryId = 1, ProductPicture = "https://" }
                 );
         }
     }
