@@ -38,7 +38,7 @@ namespace Ecom.API.Controllers
             return BadRequest("No Data");
         }
 
-        [HttpGet("Get-Categorie-by-id/{id}")]
+        [HttpGet("Get-Category-by-id/{id}")]
         public async Task<IActionResult> Get(int id)
         {
             var Category = await _uOW.CategoryRepository.GetAsync(id);
@@ -62,9 +62,10 @@ namespace Ecom.API.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var category = new Category();
-                    category.Name = model.Name;
-                    category.Description = model.Description;
+                    //var category = new Category();
+                    //category.Name = model.Name;
+                    //category.Description = model.Description;
+                    var category  = mapper.Map<Category>(model);
                     await _uOW.CategoryRepository.AddAsync(category);
                     return Ok(model);
                 }
@@ -79,24 +80,25 @@ namespace Ecom.API.Controllers
             }
         }
 
-        [HttpPost("Update-exiting-Category-by-id/{id}")]
-        public async Task<IActionResult> Put (int id,CategoryDto model)
+        [HttpPut("Update-exiting-Category-by-id")]
+        public async Task<IActionResult> Put (UpdateCategoryDto model)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var exitingCategory = await _uOW.CategoryRepository.GetAsync(id);
+                    var exitingCategory = await _uOW.CategoryRepository.GetAsync(model.Id);
                     if (exitingCategory is not null)
                     {
                         //Updating
-                        exitingCategory.Name = model.Name;
-                        exitingCategory.Description = model.Description;
-                        await _uOW.CategoryRepository.UpdateAsync(id, exitingCategory);
+                        //exitingCategory.Name = model.Name;
+                        //exitingCategory.Description = model.Description;
+                        mapper.Map(model, exitingCategory);
+                        await _uOW.CategoryRepository.UpdateAsync(model.Id, exitingCategory);
                         return Ok(model);
                     }
                 }
-                return BadRequest($"Category Not Found, Id [{id}] incorrect");
+                return BadRequest($"Category Not Found, Id [{model.Id}] incorrect");
             }
             catch (Exception ex )
             {
