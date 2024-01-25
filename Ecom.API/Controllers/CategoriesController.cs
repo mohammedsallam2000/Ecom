@@ -1,4 +1,5 @@
-﻿using Ecom.API.Dtos;
+﻿using AutoMapper;
+using Ecom.API.Dtos;
 using Ecom.Core.Entities;
 using Ecom.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -11,10 +12,12 @@ namespace Ecom.API.Controllers
     public class CategoriesController : ControllerBase
     {
         private readonly IUnitOfWork _uOW;
+        private readonly IMapper mapper;
 
-        public CategoriesController(IUnitOfWork uOW)
+        public CategoriesController(IUnitOfWork uOW,IMapper mapper)
         {
             this._uOW = uOW;
+            this.mapper = mapper;
         }
         [HttpGet("Get-All-Categories")]
         public async Task<IActionResult> Get()
@@ -23,11 +26,13 @@ namespace Ecom.API.Controllers
           
             if (allCategory is not null)
             {
-                var res = allCategory.Select(x => new CategoryDto
-                {
-                    Name = x.Name,
-                    Description = x.Description
-                }).ToList();
+                var res = mapper.Map<IReadOnlyList<Category>,IReadOnlyList<ListingCategoryDto> >(allCategory);
+                 
+                //var res = allCategory.Select(x => new CategoryDto
+                //{
+                //    Name = x.Name,
+                //    Description = x.Description
+                //}).ToList();
                 return Ok(res);
             }
             return BadRequest("No Data");
@@ -39,13 +44,13 @@ namespace Ecom.API.Controllers
             var Category = await _uOW.CategoryRepository.GetAsync(id);
             if (Category is not null)
             {
-                var model = new ListingCategoryDto
-                {
-                    Id = Category.Id,
-                    Name = Category.Name,
-                    Description = Category.Description
-                };
-                return Ok(model);
+                //var model = new ListingCategoryDto
+                //{
+                //    Id = Category.Id,
+                //    Name = Category.Name,
+                //    Description = Category.Description
+                //};
+                return Ok(mapper.Map<Category, ListingCategoryDto>(Category));
             }
             return BadRequest("No Data");
         }
