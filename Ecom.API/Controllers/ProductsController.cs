@@ -46,7 +46,7 @@ namespace Ecom.API.Controllers
 
 
         [HttpPost("Add-new-Product")]
-        public async Task<ActionResult> Post(CreateProductDto model)
+        public async Task<ActionResult> Post([FromForm]CreateProductDto model)
         {
             try
             {
@@ -57,6 +57,48 @@ namespace Ecom.API.Controllers
                     return res?Ok(res):BadRequest(model);
                 }
                 return BadRequest(model);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("Update-exiting-Product/{id}")]
+        public async Task<ActionResult> Put(int Id, [FromForm]UpdateProductDto dto)
+        {
+            try
+            { 
+                if (ModelState.IsValid)
+                {
+                    var res = await uOW.ProductRepository.UpdateAsync(Id,dto);
+                    return res?Ok(res):BadRequest(dto);
+                }
+                return BadRequest(dto);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        [HttpDelete("Delete-Product-by-id/{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var CurrentProduct = await uOW.ProductRepository.GetAsync(id);
+                    if (CurrentProduct is not null)
+                    {
+                        var res = await uOW.ProductRepository.DeleteAsyncWithPicture(id);
+                        return Ok(res);
+                    }
+                    return BadRequest($"Product Not Found, Id [{id}] incorrect");
+                }
+                return BadRequest($"Product Not Found, Id [{id}] incorrect");
 
             }
             catch (Exception ex)
