@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Ecom.API.Error;
 using Ecom.Core.Dtos;
 using Ecom.Core.Entities;
 using Ecom.Core.Interfaces;
@@ -33,9 +34,13 @@ namespace Ecom.API.Controllers
         }
 
         [HttpGet("Get-Product-by-id/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(BaseCommonResponse),StatusCodes.Status404NotFound)]
         public async Task<ActionResult> Get(int id)
         {
             var res = await uOW.ProductRepository.GetByIdAsync(id,x=>x.Category);
+            if (res is null)
+                return NotFound(new BaseCommonResponse(404));
             var result = mapper.Map<ProductDto>(res);
             if (result == null)
             {
