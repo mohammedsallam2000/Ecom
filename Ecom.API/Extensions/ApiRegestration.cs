@@ -29,6 +29,17 @@ namespace Ecom.API.Extensions
                     return new BadRequestObjectResult(errorResponse);
                 };
             });
+
+            // Enable CORS
+            services.AddCors(opt => {
+                opt.AddPolicy("CorsPolisy", pol =>
+                {
+                    pol.AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .WithOrigins("http://localhost:4200");
+
+                });
+            });
             return services;
         }
     }

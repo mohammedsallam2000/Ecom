@@ -32,6 +32,7 @@ app.UseMiddleware<ExceptionMiddleWare>();
 app.UseStatusCodePagesWithReExecute("/errors/{0}");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseCors("CorsPolisy");
 app.UseAuthorization();
 
 app.MapControllers();
