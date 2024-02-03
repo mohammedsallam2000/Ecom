@@ -2,8 +2,11 @@
 using Ecom.Core.Dtos;
 using Ecom.Core.Entities;
 using Ecom.Core.Interfaces;
+using Ecom.Core.Sharing;
 using Ecom.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +26,46 @@ namespace Ecom.Infrastructure.Repositories
             this.context = context;
             this.fileProvider = fileProvider;
             this.mapper = mapper;
+        }
+
+        public async Task<IEnumerable<ProductDto>> GetAllAsync(ProductParams productParams)
+        {
+            var query = await context.Products
+                .Include(p => p.Category)
+                .AsNoTracking()
+                .ToListAsync();
+
+            // Search By Product Name
+            if (!string.IsNullOrEmpty(productParams.Search))
+            {
+                query = query.Where(x => x.Name.ToLower() == productParams.Search).ToList();
+            }
+
+            //Search By CategoryId
+            if (productParams.CategoryId.HasValue)
+            {
+                query = query.Where(x => x.CategoryId == productParams.CategoryId.Value).ToList();
+            }
+
+            //Sorting
+            if (!productParams.Sort.IsNullOrEmpty())
+            {
+                query = productParams.Sort switch
+                {
+                    "PriceAsyn" => query.OrderBy(x => x.Price).ToList(),
+                    "PriceDesc" => query.OrderByDescending(x => x.Price).ToList(),
+                    _ => query.OrderBy(x => x.Name).ToList(),
+                };
+            }
+
+            //Pagging
+            //productParams.PageNumber = productParams.PageNumber > 0 ? productParams.PageNumber : 1;
+            //pageSize = pageSize > 0 ? pageSize : 3;
+            query = query.Skip((productParams.PageSize) *(productParams.PageNumber - 1)).Take(productParams.PageSize).ToList();
+
+
+            var result = mapper.Map<List<ProductDto>>(query);
+            return result;
         }
 
         public async Task<bool> AddAsync(CreateProductDto dto)
@@ -117,5 +160,7 @@ namespace Ecom.Infrastructure.Repositories
             }
             return true;
         }
+
+
     }
 }
