@@ -28,8 +28,9 @@ namespace Ecom.Infrastructure.Repositories
             this.mapper = mapper;
         }
 
-        public async Task<IEnumerable<ProductDto>> GetAllAsync(ProductParams productParams)
+        public async Task<ReturnProductDto> GetAllAsync(ProductParams productParams)
         {
+            var result = new ReturnProductDto();
             var query = await context.Products
                 .Include(p => p.Category)
                 .AsNoTracking()
@@ -57,14 +58,14 @@ namespace Ecom.Infrastructure.Repositories
                     _ => query.OrderBy(x => x.Name).ToList(),
                 };
             }
-
+            result.TotalItems = query.Count;
             //Pagging
             //productParams.PageNumber = productParams.PageNumber > 0 ? productParams.PageNumber : 1;
             //pageSize = pageSize > 0 ? pageSize : 3;
             query = query.Skip((productParams.PageSize) *(productParams.PageNumber - 1)).Take(productParams.PageSize).ToList();
 
 
-            var result = mapper.Map<List<ProductDto>>(query);
+            result.ProductDto = mapper.Map<List<ProductDto>>(query);
             return result;
         }
 
@@ -97,7 +98,7 @@ namespace Ecom.Infrastructure.Repositories
 
         public async Task<bool> UpdateAsync(int id, UpdateProductDto dto)
         {
-            var CurrentProduct = await context.Products.FindAsync(id);
+            var CurrentProduct = await context.Products.AsNoTracking().FirstOrDefaultAsync(x=>x.Id == id);
             if (CurrentProduct != null)
             {
                 var src = "";
@@ -129,6 +130,7 @@ namespace Ecom.Infrastructure.Repositories
                 // Update Product
                 var res = mapper.Map<Product>(dto);
                 res.ProductPicture = src;
+                res.Id = id;
                 context.Products.Update(res);
                 await context.SaveChangesAsync();
 

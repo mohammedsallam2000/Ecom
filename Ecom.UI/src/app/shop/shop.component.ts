@@ -1,0 +1,74 @@
+import { Component, OnInit } from '@angular/core';
+import { ShopService } from './shop.service';
+import { IProducts } from '../shared/Models/Products';
+import { CommonModule } from '@angular/common';
+import { ShopItemComponent } from './shop-item/shop-item.component';
+import { ICategory } from '../shared/Models/Category';
+import { ShopParams } from '../shared/Models/ShopParams';
+import { PagingHeaderComponent } from '../shared/components/paging-header/paging-header.component';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+
+@Component({
+  selector: 'app-shop',
+  standalone: true,
+  templateUrl: './shop.component.html',
+  styleUrl: './shop.component.scss',
+  imports: [CommonModule, ShopItemComponent, PagingHeaderComponent,PaginationModule]
+})
+export class ShopComponent implements OnInit {
+
+  products: IProducts[];
+  categories: ICategory[];
+  totalCount: number;
+  sortSelect: string = 'Name';
+  shopParams = new ShopParams()
+  sortOptions = [
+    { name: 'Name', value: 'Name' },
+    { name: 'Price : Max to Min', value: 'PriceDesc' },
+    { name: 'Price : Min to Max', value: 'PriceAsyn' },
+
+
+  ]
+
+
+  constructor(private _ShopService: ShopService) {
+
+  }
+  ngOnInit(): void {
+    this.GetProducts();
+    this.GetCategories();
+
+  }
+  GetProducts() {
+    this._ShopService.GetProducts(this.shopParams).subscribe(res => {
+      this.products = res.data;
+      this.totalCount = res.count
+      this.shopParams.pageNumber = res.pageNumber
+      this.shopParams.pageSize = res.pageSize
+      console.log(this.totalCount)
+    })
+  }
+
+  GetCategories() {
+    this._ShopService.GetCategory().subscribe(res => {
+      this.categories = [{ id: 0, name: "All", description: "" }, ...res];
+    })
+  }
+
+  onCategorySelect(categoryId: number) {
+    this.shopParams.categoryId = categoryId;
+    this.GetProducts();
+  }
+
+  onSortSelect(sort: Event) {
+    let sortValue = (sort.target as HTMLInputElement).value
+    this.shopParams.sort = sortValue;
+    this.GetProducts();
+  }
+
+
+  onPageChange(event: any) {
+    this.shopParams.pageNumber = event;
+     this.GetProducts();
+  }
+}

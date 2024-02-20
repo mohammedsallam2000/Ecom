@@ -1,0 +1,14 @@
+    <header>
+        <span *ngIf="totalCount &&totalCount>0">Showing
+
+            <strong>
+                <!-- 1-6 -->
+                {{(pageNumber - 1)* pageSize +1 }}
+
+                -
+                {{pageNumber * pageSize > totalCount ?totalCount:pageNumber
+                * pageSize}}
+            </strong> of <strong>{{totalCount}}</strong> results</span>
+        <span *ngIf="totalCount ===0" class="text-danger">No result to show !</span>
+    </header>
+

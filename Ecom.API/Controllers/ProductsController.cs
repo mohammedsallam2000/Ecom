@@ -29,14 +29,13 @@ namespace Ecom.API.Controllers
             //var res = await uOW.ProductRepository.GetAllAsync(x=>x.Category);
             var res = await uOW.ProductRepository.GetAllAsync(productParams);
             //var totalItems = await uOW.ProductRepository.CountAsync();
-            var result = mapper.Map<List<ProductDto>>(res);
+            var result = mapper.Map<List<ProductDto>>(res.ProductDto);
 
             if (result == null)
             {
                 return BadRequest("No Data");
             }
-            var totalItems = result.Count();
-            return Ok(new Pagination<ProductDto>(productParams.PageNumber,productParams.PageSize, totalItems,result));
+            return Ok(new Pagination<ProductDto>(productParams.PageNumber,productParams.PageSize, res.TotalItems,result));
         }
 
         [HttpGet("Get-Product-by-id/{id}")]
@@ -84,7 +83,7 @@ namespace Ecom.API.Controllers
                 if (ModelState.IsValid)
                 {
                     var res = await uOW.ProductRepository.UpdateAsync(Id,dto);
-                    return res?Ok(res):BadRequest(dto);
+                    return res?Ok(res):BadRequest();
                 }
                 return BadRequest(dto);
             }
