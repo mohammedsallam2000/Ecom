@@ -11,3 +11,10 @@
     top: 16px;
     right: 246px;
 }
+
+a{
+    color: black;
+    &active {
+        color: blue;
+    }
+}

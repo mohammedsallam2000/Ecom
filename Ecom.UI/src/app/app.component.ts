@@ -7,14 +7,14 @@ import { SharedModule } from './shared/shared.module';
 import { HttpClientModule } from '@angular/common/http';
 import { ShopModule } from './shop/shop.module';
 import { ShopComponent } from './shop/shop.component';
-import { ShopService } from './shop/shop.service';
 import { ShopItemComponent } from './shop/shop-item/shop-item.component';
+import { HomeModule } from './home/home.module';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [CommonModule, RouterOutlet, CoreModule, NavBarComponent, 
-    SharedModule, HttpClientModule,ShopModule,ShopComponent,ShopItemComponent],
+    SharedModule, HttpClientModule,ShopModule,ShopComponent,ShopItemComponent,HomeModule],
     
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
