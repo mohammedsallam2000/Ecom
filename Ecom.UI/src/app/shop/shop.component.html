@@ -22,9 +22,10 @@
                 </app-paging-header>
                 <div class="col-9">
                     <div class="input-group">
-                        <input type="text" class="form-control mr-2" placeholder="Search">
-                        <button class="btn btn-outline-success">Search</button>
-                        <button class="btn btn-outline-warning">Reset</button>
+                        <input (keyup.enter)="onSearch()" type="text" class="form-control mr-2" #search placeholder="Search">
+                        <button class="btn btn-outline-success" (click)="onSearch()">Search</button> 
+                        <!-- (click)="onSearch(search.value) -->
+                        <button class="btn btn-outline-warning" (click)="onReset()">Reset</button>
                     </div>
                 </div>
             </div>
