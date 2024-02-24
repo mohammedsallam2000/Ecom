@@ -9,12 +9,12 @@ import { NotFoundComponent } from './core/not-found/not-found.component';
 import { ServerErrorComponent } from './core/server-error/server-error.component';
 
 export const routes: Routes = [
-    {path: '', component: HomeComponent},
-    {path: 'NotFound', component: NotFoundComponent},
-    {path: 'ServerError', component: ServerErrorComponent},
-    {path: 'testError', component: TestErrorComponent},
-    {path: 'shop', component: ShopComponent},
-    {path: 'shop/:id', component: ProductDetailsComponent},
-    {path: '**', redirectTo:'',pathMatch:'full'},
+    {path: '', component: HomeComponent,data:{breadcrumb:'Home'}},
+    {path: 'NotFound', component: NotFoundComponent,data:{breadcrumb:'NotFound'}},
+    {path: 'ServerError', component: ServerErrorComponent,data:{breadcrumb:'ServerError'}},
+    {path: 'testError', component: TestErrorComponent,data:{breadcrumb:'testError'}},
+    {path: 'shop', component: ShopComponent,data:{breadcrumb:'shop'}},
+    {path: 'shop/:id', component: ProductDetailsComponent,data:{breadcrumb:'shop'}},
+    {path: '**', redirectTo:'NotFound',pathMatch:'full'},
 
 ];
