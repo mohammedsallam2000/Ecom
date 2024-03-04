@@ -6,6 +6,9 @@ import { SharedModule } from '../shared/shared.module';
 import { PagingHeaderComponent } from '../shared/components/paging-header/paging-header.component';
 import { ProductDetailsComponent } from './product-details/product-details.component';
 import { RouterModule } from '@angular/router';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { loaderInterceptor } from '../core/interceptors/loader.interceptor';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 
 
@@ -13,7 +16,10 @@ import { RouterModule } from '@angular/router';
   declarations: [],
   imports: [
     ShopComponent,
-    CommonModule,ShopItemComponent,PagingHeaderComponent,SharedModule,ProductDetailsComponent,RouterModule
+    CommonModule,ShopItemComponent,PagingHeaderComponent,SharedModule,ProductDetailsComponent,RouterModule,NgxSpinnerModule
+  ],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: loaderInterceptor, multi: true }
   ],
   exports:[ShopComponent]
 })

@@ -9,14 +9,17 @@ import { ShopModule } from './shop/shop.module';
 import { ShopComponent } from './shop/shop.component';
 import { ShopItemComponent } from './shop/shop-item/shop-item.component';
 import { HomeModule } from './home/home.module';
-import { errorInterceptor } from './core/interceptors/error.interceptor';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { loaderInterceptor } from './core/interceptors/loader.interceptor';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [CommonModule, RouterOutlet, CoreModule, NavBarComponent,
-    SharedModule, HttpClientModule, ShopModule, ShopComponent, ShopItemComponent, HomeModule],
-  //providers: [{ provide: HTTP_INTERCEPTORS, useClass: errorInterceptor, multi: true }],
+    SharedModule, HttpClientModule, ShopModule, ShopComponent, ShopItemComponent,SharedModule, HomeModule, NgxSpinnerModule],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: loaderInterceptor, multi: true }
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

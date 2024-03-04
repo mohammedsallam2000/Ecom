@@ -7,13 +7,19 @@ import { ICategory } from '../shared/Models/Category';
 import { ShopParams } from '../shared/Models/ShopParams';
 import { PagingHeaderComponent } from '../shared/components/paging-header/paging-header.component';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { loaderInterceptor } from '../core/interceptors/loader.interceptor';
 
 @Component({
   selector: 'app-shop',
   standalone: true,
   templateUrl: './shop.component.html',
   styleUrl: './shop.component.scss',
-  imports: [CommonModule, ShopItemComponent, PagingHeaderComponent, PaginationModule]
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: loaderInterceptor, multi: true }
+  ],
+  imports: [CommonModule, ShopItemComponent, PagingHeaderComponent, PaginationModule,NgxSpinnerModule]
 })
 export class ShopComponent implements OnInit {
 
