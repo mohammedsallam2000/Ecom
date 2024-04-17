@@ -6,6 +6,7 @@ using Ecom.Infrastructure;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.FileProviders;
+using StackExchange.Redis;
 using System.Reflection;
 
 
@@ -19,6 +20,15 @@ builder.Services.AddApiRegistration();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.InfrastructureConfigration(builder.Configuration);
+
+
+// Configure Redis
+builder.Services.AddSingleton<IConnectionMultiplexer>(i =>
+{
+    var configure = ConfigurationOptions.Parse(builder.Configuration.GetConnectionString("Redis"), true);
+    return ConnectionMultiplexer.Connect(configure);
+});
+
 
 var app = builder.Build(); 
 
