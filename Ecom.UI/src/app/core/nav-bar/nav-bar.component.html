@@ -16,9 +16,9 @@
       </ul> 
 
       <div class="col-md-3 text-end">
-        <a>
+        <a [routerLink]="['basket']">
             <i class="fa fa-shopping-cart fa-2x" style="margin-right: 30px;"></i>
-            <div class="card-num">4</div>
+            <div class="card-num" *ngIf="(basket$ | async) as basket">{{basket.basketItems.length}}</div>
         </a>
         <button type="button" class="btn btn-outline-primary me-2 ">Login</button>
         <button type="button" class="btn btn-primary">Sign-up</button>
