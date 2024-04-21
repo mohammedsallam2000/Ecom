@@ -8,6 +8,7 @@ import { TestErrorComponent } from './core/test-error/test-error.component';
 import { NotFoundComponent } from './core/not-found/not-found.component';
 import { ServerErrorComponent } from './core/server-error/server-error.component';
 import { BasketComponent } from './basket/basket.component';
+import { CheckoutComponent } from './checkout/checkout/checkout.component';
 
 export const routes: Routes = [
     {path: '', component: HomeComponent,data:{breadcrumb:'Home'}},
@@ -17,6 +18,7 @@ export const routes: Routes = [
     {path: 'shop', component: ShopComponent,data:{breadcrumb:'shop'}},
     {path: 'basket', component: BasketComponent,data:{breadcrumb:'basket'}},
     {path: 'shop/:id', component: ProductDetailsComponent,data:{breadcrumb:'shop'}},
+    {path: 'checkout', component: CheckoutComponent,data:{breadcrumb:'checkout'}},
     {path: '**', redirectTo:'NotFound',pathMatch:'full'},
 
 ];

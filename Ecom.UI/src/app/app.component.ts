@@ -15,13 +15,16 @@ import { BasketModule } from './basket/basket.module';
 import { BasketComponent } from './basket/basket.component';
 import { BasketService } from './basket/basket.service';
 import { error } from 'console';
+import { OrderTotalsComponent } from './shared/components/order-totals/order-totals.component';
+import { CheckoutModule } from './checkout/checkout.module';
+import { CheckoutComponent } from './checkout/checkout/checkout.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [CommonModule, RouterOutlet, CoreModule, NavBarComponent,
     SharedModule, HttpClientModule, ShopModule, ShopComponent, ShopItemComponent,SharedModule, HomeModule, NgxSpinnerModule,BasketModule
-  ,BasketComponent],
+  ,BasketComponent,OrderTotalsComponent,CheckoutModule,CheckoutComponent],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: loaderInterceptor, multi: true }
   ],
