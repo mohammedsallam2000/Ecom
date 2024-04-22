@@ -46,5 +46,5 @@ app.UseCors("CorsPolisy");
 app.UseAuthorization();
 
 app.MapControllers();
-
+InfrastructureRegisteration.InfrastructureConfigMiddleWare(app);
 app.Run();
