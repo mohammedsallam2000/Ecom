@@ -32,7 +32,7 @@ namespace Ecom.Infrastructure.Repositories
             this.redis = redis;
             CategoryRepository = new CategoryRepository(_context);
             ProductRepository = new ProductRepository(_context,fileProvider,mapper);
-            BasketRepository = new BasketRepository(redis);
+            BasketRepository = new BasketRepository(redis,mapper);
         }
     }
 }

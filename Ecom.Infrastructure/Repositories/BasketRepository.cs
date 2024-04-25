@@ -1,4 +1,6 @@
-﻿using Ecom.Core.Entities;
+﻿using AutoMapper;
+using Ecom.Core.Dtos;
+using Ecom.Core.Entities;
 using Ecom.Core.Interfaces;
 using StackExchange.Redis;
 using System;
@@ -14,10 +16,14 @@ namespace Ecom.Infrastructure.Repositories
     {
         private readonly IDatabase _dataBase;
 
-        public BasketRepository(IConnectionMultiplexer redis)
+        public BasketRepository(IConnectionMultiplexer redis,IMapper mapper)
         {
             _dataBase = redis.GetDatabase();
+            Mapper = mapper;
         }
+
+        public IMapper Mapper { get; }
+
         public async Task<bool> DeleteBasketAsenc(string basketId)
         {
             //var check = await _dataBase.KeyExistsAsync(basketId);

@@ -2,10 +2,12 @@
 using Ecom.API.Error;
 using Ecom.API.Extensions;
 using Ecom.API.MiddleWare;
+using Ecom.Core.Interfaces;
 using Ecom.Infrastructure;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.OpenApi.Models;
 using StackExchange.Redis;
 using System.Reflection;
 
@@ -18,7 +20,28 @@ builder.Services.AddControllers();
 builder.Services.AddApiRegistration();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(s =>
+{
+    // Swagger Authorization
+    var securityScheme = new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Description = "JWT Auth Bearer",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Reference = new OpenApiReference
+        {
+            Id = "Bearer",
+            Type =ReferenceType.SecurityScheme
+        }
+    };
+    s.AddSecurityDefinition("Bearer", securityScheme);
+    var SecurityRequirement = new OpenApiSecurityRequirement
+    {
+        {securityScheme,new[]{"Bearer"} }
+    };
+    s.AddSecurityRequirement(SecurityRequirement);
+});
 builder.Services.InfrastructureConfigration(builder.Configuration);
 
 
@@ -28,6 +51,9 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(i =>
     var configure = ConfigurationOptions.Parse(builder.Configuration.GetConnectionString("Redis"), true);
     return ConnectionMultiplexer.Connect(configure);
 });
+
+
+
 
 
 var app = builder.Build(); 
@@ -43,6 +69,7 @@ app.UseStatusCodePagesWithReExecute("/errors/{0}");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseCors("CorsPolisy");
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

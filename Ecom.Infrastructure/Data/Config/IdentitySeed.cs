@@ -30,7 +30,7 @@ namespace Ecom.Infrastructure.Data.Config
                     }
                 };
 
-                await userManager.CreateAsync (user,"M123!");
+                 await userManager.CreateAsync (user,"Ma12345!");
             }
         }
     }
