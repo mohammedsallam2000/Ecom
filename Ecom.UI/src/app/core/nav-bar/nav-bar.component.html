@@ -1,26 +1,45 @@
+<header
+  class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+  <a class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
+    <img src="../../../assets/Photos/logo.jpg" [routerLink]="['/']" width="70px" />
+  </a>
 
-    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-      <a class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
-      <img src="../../../assets/Photos/logo.jpg" [routerLink]="['/']" width="70px"/>
+  <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+    <li><a class="nav-link px-2 " [routerLink]="['/']" routerLinkActive="active">Home</a></li>
+    <li><a class="nav-link px-2 " [routerLink]="['shop']" routerLinkActive="active">Shop</a></li>
+    <li><a class="nav-link px-2 " [routerLink]="['/']">Contact</a></li>
+    <li><a class="nav-link px-2 " [routerLink]="['testError']">Errors</a></li>
+    <li><a class="nav-link px-2 ">About</a></li>
+  </ul>
+
+  <div class="d-flex flex-wrap align-items-center">
+    <a [routerLink]="['basket']" class="">
+      <i class="fa fa-shopping-cart fa-2x" style="margin-right: 30px;"></i>
+      <div class="card-num" *ngIf="(basket$ | async) as basket">{{basket.basketItems.length}}</div>
     </a>
+    <div *ngIf="(currentUser$ | async) === null">
+      <button type="button" routerLink="/account/login" class="btn btn-outline-primary me-2 ">Login</button>
+      <button type="button" routerLink="/account/register" class="btn btn-primary">Sign-up</button>
+    </div>
 
-      <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-        <li><a  class="nav-link px-2 " 
-          [routerLink]="['/']" 
-          routerLinkActive="active" 
-          >Home</a></li>
-        <li><a  class="nav-link px-2 " [routerLink]="['shop']" routerLinkActive="active">Shop</a></li>
-        <li><a  class="nav-link px-2 " [routerLink]="['/']" >Contact</a></li>
-        <li><a  class="nav-link px-2 " [routerLink]="['testError']">Errors</a></li>
-        <li><a  class="nav-link px-2 ">About</a></li>
-      </ul> 
-
-      <div class="col-md-3 text-end">
-        <a [routerLink]="['basket']">
-            <i class="fa fa-shopping-cart fa-2x" style="margin-right: 30px;"></i>
-            <div class="card-num" *ngIf="(basket$ | async) as basket">{{basket.basketItems.length}}</div>
+    <div *ngIf="(currentUser$ | async)">
+      <div class="btn-group ml-3 mr-5" dropdown>
+        <a class="dropdown-toggle" dropdownToggle style="text-decoration: none; cursor: pointer;">
+          <span style="font-weight: bold;">Welcome, {{(currentUser$ | async).displayName }}</span>
         </a>
-        <button type="button" class="btn btn-outline-primary me-2 ">Login</button>
-        <button type="button" class="btn btn-primary">Sign-up</button>
+        <div *dropdownMenu class="dropdown-menu">
+          <a class="dropdown-item" routerLink="/basket">
+            <i class="fa fa-shopping-cart mx-1"></i>Basket</a>
+          <a class="dropdown-item" routerLink="/orders">
+            <i class="fa fa-history mx-1"></i>Orders</a>
+          <div class="divider dropdown-divider"></div>
+          <a (click)="logOut()" class="dropdown-item">
+            <i class="fa fa-sign-out mx-1"></i>LogOut</a>
+        </div>
       </div>
-    </header>
+      <a (click)="logOut()" class="dropdown-item">
+        <i class="fa fa-sign-out mx-1"></i>LogOut</a>
+    </div>
+
+  </div>
+</header>

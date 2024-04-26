@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { ToastrModule } from 'ngx-toastr';
 import { SectionHeaderComponent } from './section-header/section-header.component';
 import { BreadcrumbModule } from 'xng-breadcrumb';
+import { SharedModule } from '../shared/shared.module';
 
 
 
@@ -14,7 +15,7 @@ import { BreadcrumbModule } from 'xng-breadcrumb';
     CommonModule,NavBarComponent,SectionHeaderComponent,RouterModule,ToastrModule.forRoot({
       positionClass:'toast-bottom-right',
       countDuplicates:true
-    }),BreadcrumbModule
+    }),BreadcrumbModule,SharedModule
   ],
   
   exports:[NavBarComponent,SectionHeaderComponent]

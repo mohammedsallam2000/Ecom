@@ -18,13 +18,16 @@ import { error } from 'console';
 import { OrderTotalsComponent } from './shared/components/order-totals/order-totals.component';
 import { CheckoutModule } from './checkout/checkout.module';
 import { CheckoutComponent } from './checkout/checkout/checkout.component';
+import { AccountModule } from './account/account.module';
+import { AccountService } from './account/account.service';
+import { subscribe } from 'diagnostics_channel';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [CommonModule, RouterOutlet, CoreModule, NavBarComponent,
-    SharedModule, HttpClientModule, ShopModule, ShopComponent, ShopItemComponent,SharedModule, HomeModule, NgxSpinnerModule,BasketModule
-  ,BasketComponent,OrderTotalsComponent,CheckoutModule,CheckoutComponent],
+    SharedModule, HttpClientModule, ShopModule, ShopComponent, ShopItemComponent, SharedModule, HomeModule, NgxSpinnerModule, BasketModule
+    , BasketComponent, OrderTotalsComponent, CheckoutModule, CheckoutComponent, AccountModule],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: loaderInterceptor, multi: true }
   ],
@@ -34,22 +37,43 @@ import { CheckoutComponent } from './checkout/checkout/checkout.component';
 export class AppComponent implements OnInit {
 
 
-  constructor(private basketService:BasketService) {
+  constructor(private basketService: BasketService, private accountService: AccountService) {
   }
 
   ngOnInit(): void {
-const basketId = localStorage.getItem('basket_id')
-if(basketId)
-  {
-    this.basketService.getBasket(basketId).subscribe({
-      next:()=>{
-console.log('initialBasket')
-      },
-      error:(err)=>{
-console.error(err)
-      }
-    })
+    this.loadCurrentUser();
+this.loadBasket();
+    
   }
+
+loadBasket(){
+  const basketId = localStorage.getItem('basket_id')
+    if (basketId) {
+      this.basketService.getBasket(basketId).subscribe({
+        next: () => {
+          console.log('initialBasket')
+        },
+        error: (err) => {
+          console.error(err)
+        }
+      })
+    }
+}
+
+  loadCurrentUser() {
+    const token = localStorage.getItem('token');
+    if (token) {
+
+      this.accountService.loadCurrentUser(token).subscribe({
+        next: () => {
+          console.log('loaded successfully')
+        },
+        error: (err) => {
+          console.log(err)
+        }
+      }
+      );
+    }
   }
 
 }
