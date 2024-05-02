@@ -17,7 +17,10 @@ export class loaderInterceptor implements HttpInterceptor {
 
   }
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    this._LoaderService.loader()
+    if(!req.url.includes('check-email-exist')){
+
+      this._LoaderService.loader()
+    }
     return next.handle(req).pipe(
       delay(1000),
       finalize(()=>{

@@ -62,7 +62,7 @@ loadBasket(){
 
   loadCurrentUser() {
     const token = localStorage.getItem('token');
-    if (token) {
+    // if (token) {
 
       this.accountService.loadCurrentUser(token).subscribe({
         next: () => {
@@ -73,7 +73,7 @@ loadBasket(){
         }
       }
       );
-    }
+    //}
   }
 
 }

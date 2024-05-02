@@ -1,1 +1,69 @@
-<p>register works!</p>
+<div class="text-center" data-new-gr-c-s-check-loaded="14.1169.0" data-gr-ext-installed="">
+    
+    <main class="form-signin" >
+      <form [formGroup]="registerFrom" novalidate (ngSubmit)="onSubmit()">
+        <!-- <img class="mb-4" src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57"> -->
+        <h1 class="h3 mb-3 fw-normal">Ecom | Sign up</h1>
+        <div class="form-floating">
+            <input formControlName="displayName" type="text" class="form-control"  placeholder="Name"
+            [class.is-invalid]="_displayName.invalid && _displayName.touched"
+            [class.is-valid]="_displayName.valid">
+            <label for="floatingPassword">Name</label>
+            <small class="text-danger" [class.d-none]="_displayName.valid || _displayName.untouched">* Name is required</small>
+          </div>
+
+        <div class="form-floating" >
+            <input formControlName="email" type="email" class="form-control" 
+            [class.is-invalid]="_email.invalid && _email.touched || _email?.errors?.['emailExist']"
+            [class.is-valid]="_email.valid"
+            placeholder="name@example.com">
+            <span [ngClass]="{'hideLoader':!_email.pending}">
+              <i class="fa fa-spinner fa-spin text-danger loader"></i>
+            </span>
+            <div *ngIf="_email.invalid && _email.touched || _email?.errors?.['emailExist']">
+                <small class="text-danger" *ngIf="_email?.errors?.['required']">* Email is required</small>
+                <small class="text-danger" *ngIf="_email?.errors?.['pattern']">*Invalid Email Pattern</small>
+    // emailExist
+    <small class="text-danger" *ngIf="_email?.errors?.['emailExist']">*This email already token</small>
+
+            </div>
+            <!-- <small class="text-danger" [class.d-none]="_email.valid || _email.untouched">Required Email</small> -->
+            
+          <label for="floatingInput">Email</label>
+        </div>
+        <div class="form-floating">
+          <input formControlName="password" type="password" class="form-control"  placeholder="Password"
+          [class.is-invalid]="_password.invalid && _password.touched"
+          [class.is-valid]="_password.valid">
+          <label for="floatingPassword">Password</label>
+          <small class="text-danger" [class.d-none]="_password.valid || _password.untouched">* Password is required</small>
+
+        </div>
+
+
+        <div class="form-floating">
+            <input formControlName="confirmPassword" type="password" class="form-control"  placeholder="Confirm Password"
+            [class.is-invalid]="registerFrom.errors?.['missMatch']"
+            [class.is-valid]="!registerFrom.errors?.['missMatch'] && _confirmPassword.touched && _confirmPassword.dirty" >
+            <label for="floatingPassword">Confirm Password</label>
+            <small class="text-danger" *ngIf="registerFrom.errors?.['missMatch']">* Password not match</small>
+  
+          </div>
+    <ol *ngIf="errors" class="text-danger" style="font-weight: bold;">
+      <li *ngFor="let item of errors">{{item}}</li>
+    </ol>
+        <!-- <div class="checkbox mb-3">
+          <label>
+            <input type="checkbox" value="remember-me"> Remember me
+          </label>
+        </div> -->
+        <button class="w-100 btn btn-lg btn-primary" type="submit" [disabled]="registerFrom.invalid">Register</button>
+        <p class="mt-5 mb-3 text-muted">&copy;2024</p>
+      </form>
+    </main>
+    
+    
+        
+      
+    
+    </div>

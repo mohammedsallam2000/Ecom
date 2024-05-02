@@ -13,6 +13,7 @@ import { BreadcrumbModule } from 'xng-breadcrumb';
 import { skip } from 'rxjs';
 import { LoginComponent } from './account/login/login.component';
 import { RegisterComponent } from './account/register/register.component';
+import { AuthGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent, data: { breadcrumb: 'Home' } },
@@ -22,7 +23,7 @@ export const routes: Routes = [
     { path: 'shop', component: ShopComponent, data: { breadcrumb: 'shop' } },
     { path: 'basket', component: BasketComponent, data: { breadcrumb: 'basket' } },
     { path: 'shop/:id', component: ProductDetailsComponent, data: { breadcrumb: 'shop' } },
-    { path: 'checkout', component: CheckoutComponent, data: { breadcrumb: 'checkout' } },
+    { path: 'checkout', component: CheckoutComponent, data: { breadcrumb: 'checkout' } ,canActivate:[AuthGuard]},
     // { path: 'login', component: LoginComponent},
     // { path: 'register', component: RegisterComponent },
 

@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { from } from 'rxjs';
 import { AccountService } from '../account.service';
-import { Router } from 'express';
 import { CommonModule } from '@angular/common';
+import { ActivatedRoute,Router } from '@angular/router';
+import { url } from 'inspector';
 
 @Component({
   selector: 'app-login',
@@ -15,10 +16,13 @@ import { CommonModule } from '@angular/common';
 export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
-  constructor(private accountService: AccountService,private fb:FormBuilder) { }
+  returnUrl:string;
+  constructor(private accountService: AccountService,private fb:FormBuilder,
+    private activatedRoute:ActivatedRoute,private router:Router) { }
 
 
   ngOnInit(): void {
+    this.returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'] || '/shop'
     this.createLoginForm()
   }
   createLoginForm() {
@@ -38,7 +42,7 @@ get _password(){
 
   onSubmit() {
     this.accountService.Login(this.loginForm.value).subscribe({
-      next:()=>{console.log('login success')},
+      next:()=>{this.router.navigateByUrl(this.returnUrl)},
       error:(err)=>{console.log(err)}
     })
   }

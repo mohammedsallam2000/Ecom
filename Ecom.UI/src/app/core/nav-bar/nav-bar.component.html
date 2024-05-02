@@ -14,7 +14,7 @@
 
   <div class="d-flex flex-wrap align-items-center">
     <a [routerLink]="['basket']" class="">
-      <i class="fa fa-shopping-cart fa-2x" style="margin-right: 30px;"></i>
+      <i class="fa fa-shopping-cart fa-2x spcart" style="margin-right: 30px;"></i>
       <div class="card-num" *ngIf="(basket$ | async) as basket">{{basket.basketItems.length}}</div>
     </a>
     <div *ngIf="(currentUser$ | async) === null">
@@ -25,7 +25,7 @@
     <div *ngIf="(currentUser$ | async)">
       <div class="btn-group ml-3 mr-5" dropdown>
         <a class="dropdown-toggle" dropdownToggle style="text-decoration: none; cursor: pointer;">
-          <span style="font-weight: bold;">Welcome, {{(currentUser$ | async).displayName }}</span>
+          <span style="font-weight: bold;">{{(currentUser$ | async).displayName }}</span>
         </a>
         <div *dropdownMenu class="dropdown-menu">
           <a class="dropdown-item" routerLink="/basket">

@@ -1,11 +1,11 @@
 <div class="text-center" data-new-gr-c-s-check-loaded="14.1169.0" data-gr-ext-installed="">
     
-    <main class="form-signin" >
+    <main class="form-signin" style="width: 150%;">
       <form [formGroup]="loginForm" novalidate (ngSubmit)="onSubmit()">
         <!-- <img class="mb-4" src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57"> -->
         <h1 class="h3 mb-3 fw-normal">Ecom | Login</h1>
     
-        <div class="form-floating">
+        <div class="form-floating" >
             <input formControlName="email" type="email" class="form-control" 
             [class.is-invalid]="_email.invalid && _email.touched"
             [class.is-valid]="_email.valid"
