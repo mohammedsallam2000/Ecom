@@ -1,5 +1,5 @@
 ﻿using Ecom.Core.Entities;
-using Ecom.Core.Interfaces;
+using Ecom.Core.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
