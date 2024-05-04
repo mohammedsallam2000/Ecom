@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Ecom.Infrastructure.Data.Config
 {
-    public class ProductConfigration : IEntityTypeConfiguration<Product>
+    public class ProductConfiguration : IEntityTypeConfiguration<Product>
     {
         public void Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<Product> builder)
         {

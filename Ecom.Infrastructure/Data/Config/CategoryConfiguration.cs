@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Ecom.Infrastructure.Data.Config
 {
-    public class CategoryConfigration : IEntityTypeConfiguration<Category>
+    public class CategoryConfiguration : IEntityTypeConfiguration<Category>
     {
         public void Configure(EntityTypeBuilder<Category> builder)
         {
