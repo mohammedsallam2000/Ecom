@@ -27,28 +27,28 @@ namespace Ecom.Infrastructure.Repositories
             var basket = await uOW.BasketRepository.GetCustomerBasketAsenc(basketId);
             var items = new List<OrderItem>();
 
-            //Fill Items
-            //foreach(var item in basket.BasketItems)
-            //{
-            //    var productItem = await uOW.ProductRepository.GetByIdAsync(item.Id);
-            //    var productItemOrdered = new ProductItemOrdered(productItem.Id, productItem.Name, productItem.ProductPicture);
-            //    var orderItem = new OrderItem(productItemOrdered, item.Price, item.Quantity);
-            //    lock (items)
-            //    {
-            //        items.Add(orderItem);
-            //    }
-            //};
-
-            Parallel.ForEach(basket.BasketItems, item =>
+            // Fill Items
+            foreach(var item in basket.BasketItems)
             {
-                var productItem = uOW.ProductRepository.GetByIdAsync(item.Id).GetAwaiter().GetResult();
+                var productItem = await uOW.ProductRepository.GetByIdAsync(item.Id);
                 var productItemOrdered = new ProductItemOrdered(productItem.Id, productItem.Name, productItem.ProductPicture);
                 var orderItem = new OrderItem(productItemOrdered, item.Price, item.Quantity);
                 lock (items)
                 {
                     items.Add(orderItem);
                 }
-            });
+            };
+
+            //Parallel.ForEach(basket.BasketItems, item =>
+            //{
+            //    var productItem = uOW.ProductRepository.GetByIdAsync(item.Id).GetAwaiter().GetResult();
+            //    var productItemOrdered = new ProductItemOrdered(productItem.Id, productItem.Name, productItem.ProductPicture);
+            //    var orderItem = new OrderItem(productItemOrdered, item.Price, item.Quantity);
+            //    lock (items)
+            //    {
+            //        items.Add(orderItem);
+            //    }
+            //});
 
 
             await context.OrderItems.AddRangeAsync(items);

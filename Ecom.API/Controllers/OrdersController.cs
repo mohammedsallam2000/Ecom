@@ -14,7 +14,7 @@ namespace Ecom.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+     [Authorize]
     public class OrdersController : ControllerBase
     {
         private readonly IUnitOfWork uOW;
@@ -66,7 +66,7 @@ namespace Ecom.API.Controllers
         }
 
         [HttpGet("get-delivery-methods")]
-        public async Task<IActionResult> GetDeliveryMothods()
+        public async Task<ActionResult<IReadOnlyList<DeliveryMethod>>> GetDeliveryMothods()
         {
             return Ok( await orderServices.GetDeliveryMethodAsync());
         }

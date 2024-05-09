@@ -1,0 +1,54 @@
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8">
+            <!-- <div cdkStepper class="custom-stepper">
+                <div cdkStep class="custom-step" label="Address"><app-checkout-address></app-checkout-address></div>
+                <div cdkStep class="custom-step" label="Delivery"><app-checkout-delivery></app-checkout-delivery></div>
+                <div cdkStep class="custom-step" label="Step 3">Step 3</div>
+              </div> -->
+              <table class="table table-hover" style="cursor: pointer;">
+                <thead  style="color: white; background-color: rgb(36, 63, 150);">
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of order.orderItem" >
+                        <th><img width="20%" height="20%" src="{{item.pictureUrl}}" alt="{{item.productItemName}}"/> {{item.productItemName}}</th>
+                        <td>{{item.price  | currency}}</td>
+                        <td>{{item.quantity}}</td>
+                        <td>{{item.price * item.quantity| currency}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4">
+            <div  class="bg-light text-uppercase py-3" style="font-weight: bold; text-align: center;">
+                Order Summary
+            </div>
+            
+            <div class="b-4">
+                <ul class="list-unstyled mb-4" *ngIf="order">
+                    <li class="d-flex justify-content-between border-bottom py-3">
+                        <strong class="text-muted">Order Subtotal</strong>
+                        <strong>{{order.subTotal | currency}}</strong>
+                    </li>
+            
+                    <li class="d-flex justify-content-between border-bottom py-3">
+                        <strong class="text-muted">Shipping</strong>
+                        <strong>{{order.shippingPrice | currency}}</strong>
+                    </li>
+            
+                    <li class="d-flex justify-content-between border-bottom py-3">
+                        <strong class="text-muted">Total</strong>
+                        <strong>{{order.total | currency}}</strong>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

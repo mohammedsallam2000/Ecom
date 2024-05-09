@@ -1,67 +1,21 @@
-<div *ngIf="(basket$ |async )===null">
-  <h1 class="text-center text-danger">There is no items added</h1>
-</div>
 
-<section class="h-100 h-custom" style="background-color: #eee;" *ngIf="(basket$ |async )as basket">
+
+<section class="h-100 h-custom" style="background-color: #eee;" >
   <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col">
+      <div *ngIf="(basket$ |async )===null">
+        <h3 class="text-center text-danger">There is no items added</h3>
+      </div>
+      <div class="col" *ngIf="(basket$ |async )">
+        
         <div class="card">
           <div class="card-body p-8">
 
             <div class="row">
 
-              <div class="col-lg-12">
-                <h5 class="mb-3"><a [routerLink]="['/shop']" routerLinkActive="active" class="text-body"><i
-                      class="fas fa-long-arrow-alt-left me-2"></i>Continue shopping</a></h5>
-                <hr>
+             <!-- Basket-Summary -->
 
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                  <div>
-                    <p class="mb-1">Shopping cart</p>
-                    <p class="mb-0">You have {{basket.basketItems.length}} items in your cart</p>
-                  </div>
-                  <!-- <div>
-                    <p class="mb-0"><span class="text-muted">Sort by:</span> <a href="#!" class="text-body">price <i
-                          class="fas fa-angle-down mt-1"></i></a></p>
-                  </div> -->
-                </div>
-
-                <div class="card mb-3" *ngFor="let item of basket.basketItems">
-                  <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                      <div class="d-flex flex-row align-items-center">
-                        <div>
-                          <img src="{{item.productPicture}}" alt="{{item.productName}}" class="img-fluid rounded-3"
-                            style="width: 65px;">
-                        </div>
-                        <div class="ms-3">
-                          <h5>{{item.productName}}</h5>
-                          <p class="small mb-0">{{item.price}}</p>
-                        </div>
-                      </div>
-                      <div class="d-flex flex-row align-items-center">
-                        <div style="width: 100px;">
-                          <i (click)="decrementBasketItemQuantity(item)" class="fa fa-minus-square text-danger mx-2"
-                            style="font-weight: bold; cursor: pointer;"></i>
-                          <i class="fw-normal mb-0">{{item.quantity}}</i>
-                          <i  (click)="incrementBasketItemQuantity(item)" class="fa fa-plus-square text-primary mx-2"
-                            style="font-weight: bold; cursor: pointer;"></i>
-                        </div>
-                        <div style="width: 80px;">
-                          <h5 class="mb-0">${{item.price*item.quantity}}</h5>
-                        </div>
-                        <div style="width: 80px;">
-                          <button (click)="removeItemFromBasket(item)" class="btn btn-danger">Remove</button>
-                        </div>
-                        <a href="#!" style="color: #cecece;"><i class="fa fa-trash-alt"></i></a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-
-              </div>
+             <app-basket-summary></app-basket-summary>
               <div class="col-lg-5">
 
                 <!-- <div class="card bg-primary text-white rounded-3">
@@ -146,7 +100,7 @@
             </div>
             <div class="offset-6">
               <app-order-totals></app-order-totals>
-              <a routerLink="/checkout" class="btn btn-outline-success d-md-block mb-5">Proceed to checkout</a>
+              <a routerLink="/checkout/" class="btn btn-outline-success d-md-block mb-5">Proceed to checkout</a>
             </div>
           </div>
         </div>

@@ -1,0 +1,10 @@
+<div class="container mt-5 mb-3">
+<div>
+    <li class="fa fa-check-circle fa-5x" style="color: green;"></li>
+</div>
+<h2>Thank you,your order is confirmed</h2>
+<p class="mb-4">Your Order will be shipped as soon as possible</p>
+<button class="btn btn-outline-success" *ngIf="order" routerLink="/orders/{{order?.id}}" routerLinkActive="router-link-active" >View Order</button>
+<button class="btn btn-outline-success" *ngIf="!order" routerLink="/orders" routerLinkActive="router-link-active" >View Order</button>
+
+</div>

@@ -5,11 +5,12 @@ import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { OrderTotalsComponent } from '../shared/components/order-totals/order-totals.component';
+import { BasketSummaryComponent } from '../shared/components/basket-summary/basket-summary.component';
 
 @Component({
   selector: 'app-basket',
   standalone: true,
-  imports: [CommonModule,RouterLink,OrderTotalsComponent],
+  imports: [CommonModule,RouterLink,OrderTotalsComponent,BasketSummaryComponent],
   templateUrl: './basket.component.html',
   styleUrl: './basket.component.scss'
 })

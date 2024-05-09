@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, ReplaySubject, map, of, pipe } from 'rxjs';
 import { IUser } from '../shared/Models/user';
 import { Router} from '@angular/router';
+import { IAddress } from '../shared/Models/address';
 
 @Injectable({
   providedIn: 'root'
@@ -71,5 +72,26 @@ return this.http.get(this.BaseUrl+'Account/get-current-user',{headers}).pipe(
 
   checkEmailExist(email:string){
     return this.http.get(this.BaseUrl + 'Account/check-email-exist?email='+email);
+  }
+
+ 
+
+  GetUserAddress(){
+    let headers = new HttpHeaders();
+    headers = this.GetHeaderToken();
+    return this.http.get<IAddress>(this.BaseUrl + 'Account/get-user-address',{headers});
+  }
+
+  UpdateUserAddress(address:IAddress){
+    let headers = new HttpHeaders();
+    headers = this.GetHeaderToken();
+    return this.http.put<IAddress>(this.BaseUrl + 'Account/update-user-address',address,{headers});
+  }
+
+  GetHeaderToken(){
+    let headers = new HttpHeaders();
+    const token = localStorage.getItem('token');
+    headers = headers.set('Authorization',`Bearer ${token}`);
+    return headers
   }
 }

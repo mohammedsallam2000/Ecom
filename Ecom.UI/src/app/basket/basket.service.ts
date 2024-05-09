@@ -4,6 +4,7 @@ import { BehaviorSubject, map } from 'rxjs';
 import { Basket, IBasket, IBasketItem, IBasketTotals } from '../shared/Models/basket';
 import { error } from 'console';
 import { IProducts } from '../shared/Models/Products';
+import { IDeliveryMethod } from '../shared/Models/deliveryMethod';
 
 @Injectable({
   providedIn: 'root'
@@ -12,21 +13,26 @@ export class BasketService {
   BaseUrl = "https://localhost:7104/api/"
   private basketSource = new BehaviorSubject<IBasket>(null);
   basket$ = this.basketSource.asObservable();
-
+  shipping: number = 0
   private basketTotalSource = new BehaviorSubject<IBasketTotals>(null);
   basketTotal$ = this.basketTotalSource.asObservable();
 
-private calculateTotal(){
-const basket = this.getCurrentBasketValue();
-const shipping = 0;
-const subTotal = basket.basketItems.reduce((a,c)=>{
-return (c.price*c.quantity) + a
-},0);
-const total = shipping + subTotal;
-this.basketTotalSource.next({shipping,subTotal,total});
-}
+  private calculateTotal() {
+    const basket = this.getCurrentBasketValue();
+    const shipping = this.shipping;
+    const subTotal = basket.basketItems.reduce((a, c) => {
+      return (c.price * c.quantity) + a
+    }, 0);
+    const total = shipping + subTotal;
+    this.basketTotalSource.next({ shipping, subTotal, total });
+  }
 
   constructor(private http: HttpClient) {
+  }
+
+  setShippingPrice(deliveryMethod:IDeliveryMethod){
+this.shipping = deliveryMethod.price
+this.calculateTotal()
   }
 
   getBasket(id: string) {
@@ -41,14 +47,14 @@ this.basketTotalSource.next({shipping,subTotal,total});
   }
 
   setBasket(basket: IBasket) {
-    console.log("basket",basket)
+    console.log("basket", basket)
     return this.http.post(this.BaseUrl + 'Basket/Update-basket', basket).subscribe({
-      next:(res: IBasket) =>{
+      next: (res: IBasket) => {
         this.basketSource.next(res);
         this.calculateTotal();
         // console.log(res)
       },
-      error:(err)=> {
+      error: (err) => {
         console.error(err)
       },
     })
@@ -60,7 +66,7 @@ this.basketTotalSource.next({shipping,subTotal,total});
 
   addItemToBasket(item: IProducts, quantity: number = 1) {
     const itemToAdd: IBasketItem = this.mapProductItemToBasketItem(item, quantity)
-    console.log("itemToAdd",itemToAdd)
+    console.log("itemToAdd", itemToAdd)
     const basket = this.getCurrentBasketValue() ?? this.createBasket()
     basket.basketItems = this.addOrUpdate(basket.basketItems, itemToAdd, quantity);
     return this.setBasket(basket);
@@ -98,51 +104,55 @@ this.basketTotalSource.next({shipping,subTotal,total});
     }
   }
 
-incrementBasketItemQuantity (item:IBasketItem){
-  const basket = this.getCurrentBasketValue();
-  const itemIndex = basket.basketItems.findIndex(x=>x.id === item.id)
-  basket.basketItems[itemIndex].quantity++;
-  this.setBasket(basket);
-}
+  incrementBasketItemQuantity(item: IBasketItem) {
+    const basket = this.getCurrentBasketValue();
+    const itemIndex = basket.basketItems.findIndex(x => x.id === item.id)
+    basket.basketItems[itemIndex].quantity++;
+    this.setBasket(basket);
+  }
 
-decrementBasketItemQuantity (item:IBasketItem){
-  const basket = this.getCurrentBasketValue();
-  const itemIndex = basket.basketItems.findIndex(x=>x.id === item.id)
-  if(basket.basketItems[itemIndex].quantity > 1)
-    {
+  decrementBasketItemQuantity(item: IBasketItem) {
+    const basket = this.getCurrentBasketValue();
+    const itemIndex = basket.basketItems.findIndex(x => x.id === item.id)
+    if (basket.basketItems[itemIndex].quantity > 1) {
       basket.basketItems[itemIndex].quantity--;
       this.setBasket(basket);
-    }else{
+    } else {
       this.removeItemFromBasket(item)
     }
-    }
+  }
 
   removeItemFromBasket(item: IBasketItem) {
     const basket = this.getCurrentBasketValue();
-    if(basket.basketItems.some(x=>x.id === item.id))
-      {
-        basket.basketItems = basket.basketItems.filter(x=>x.id !== item.id)
-        if(basket.basketItems.length > 0)
-          {
-            this.setBasket(basket);
-          }
-          else{
-            this.deleteBasket(basket);
-          }
+    if (basket.basketItems.some(x => x.id === item.id)) {
+      basket.basketItems = basket.basketItems.filter(x => x.id !== item.id)
+      if (basket.basketItems.length > 0) {
+        this.setBasket(basket);
       }
+      else {
+        this.deleteBasket(basket);
+      }
+    }
   }
-  deleteBasket(basket: IBasket) {
-    return this.http.delete(this.BaseUrl+'Basket/Delete-basket-item/'+basket.id)
-    .subscribe({
-      next:()=>{
-this.basketSource.next(null);
-this.basketTotalSource.next(null);
+
+deleteLocalBasket(id:string){
+this.basketSource.next(null)
+this.basketTotalSource.next(null)
 localStorage.removeItem('basket_id')
-      },
-      error:(err)=> {
-        console.log(err);
-      },
-    });
+}
+
+  deleteBasket(basket: IBasket) {
+    return this.http.delete(this.BaseUrl + 'Basket/Delete-basket-item/' + basket.id)
+      .subscribe({
+        next: () => {
+          this.basketSource.next(null);
+          this.basketTotalSource.next(null);
+          localStorage.removeItem('basket_id')
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
   }
 
 }

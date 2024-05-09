@@ -1,0 +1,18 @@
+.custom-stepper {
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 5px;
+  }
+  
+  .custom-step {
+    background-color: #fff;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .custom-step:last-child {
+    margin-bottom: 0;
+  }
+  

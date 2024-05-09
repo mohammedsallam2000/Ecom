@@ -51,7 +51,6 @@ export class ShopComponent implements OnInit {
       this.totalCount = res.count
       this.shopParams.pageNumber = res.pageNumber
       this.shopParams.pageSize = res.pageSize
-      console.log(this.totalCount)
     })
   }
 
