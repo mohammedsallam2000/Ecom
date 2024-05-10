@@ -34,6 +34,9 @@ import { FooterComponent } from './core/footer/footer.component';
 import { OrdersModule } from './orders/orders.module';
 import { OrdersComponent } from './orders/Components/orders/orders.component';
 import { OrderDetailsComponent } from './orders/Components/order-details/order-details.component';
+import { AdminModule } from './admin/admin.module';
+import { CategoriesComponent } from './admin/Components/categories/categories.component';
+import { ProductsComponent } from './admin/Components/products/products.component';
 
 @Component({
   selector: 'app-root',
@@ -43,7 +46,8 @@ import { OrderDetailsComponent } from './orders/Components/order-details/order-d
     , BasketComponent, OrderTotalsComponent, CheckoutModule, CheckoutComponent, AccountModule
     ,StepperComponent,CdkStepperModule,CheckoutAddressComponent,CheckoutDeliveryComponent,
   CheckoutPaymentComponent,CheckoutReviewComponent,BasketSummaryComponent,CheckoutSuccessComponent,AboutComponent,
-  ContactComponent,FooterComponent,OrdersModule,OrdersComponent,OrderDetailsComponent],
+  ContactComponent,FooterComponent,OrdersModule,OrdersComponent,OrderDetailsComponent,
+AdminModule,ProductsComponent,CategoriesComponent],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: loaderInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }

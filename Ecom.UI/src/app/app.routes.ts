@@ -19,6 +19,8 @@ import { AboutComponent } from './shared/components/about/about.component';
 import { ContactComponent } from './shared/components/contact/contact.component';
 import { OrdersComponent } from './orders/Components/orders/orders.component';
 import { OrderDetailsComponent } from './orders/Components/order-details/order-details.component';
+import { ProductsComponent } from './admin/Components/products/products.component';
+import { CategoriesComponent } from './admin/Components/categories/categories.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent, data: { breadcrumb: 'Home' } },
@@ -34,7 +36,9 @@ export const routes: Routes = [
      { path: 'checkout/success', component: CheckoutSuccessComponent, data: { breadcrumb: 'checkout' } ,canActivate:[AuthGuard]},
      { path: 'orders', component: OrdersComponent, data: { breadcrumb: 'orders' },canActivate:[AuthGuard] }, //,canActivate:[AuthGuard] 
      { path: 'orders/:id', component: OrderDetailsComponent, data: { breadcrumb: {alias:'OrderDetails'}},canActivate:[AuthGuard] }, //,canActivate:[AuthGuard] 
-    
+     { path: 'admin/products', component: ProductsComponent, data: { breadcrumb: {alias:'products'}} }, //,canActivate:[AuthGuard] 
+     { path: 'admin/categories', component: CategoriesComponent, data: { breadcrumb: {alias:'Categories'}} }, //,canActivate:[AuthGuard] 
+
     // { path: 'login', component: LoginComponent},
     // { path: 'register', component: RegisterComponent },
 
