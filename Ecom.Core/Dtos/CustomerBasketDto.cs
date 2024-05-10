@@ -13,5 +13,8 @@ namespace Ecom.Core.Dtos
         [Required]
         public string Id { get; set; }
         public List<BasketItemsDto> BasketItems { get; set; } = new List<BasketItemsDto>();
+        public int? DeliveryMethodId { get; set; }
+        public string ClientSecrete { get; set; }
+        public string PaymentIntentId { get; set; }
     }
 }

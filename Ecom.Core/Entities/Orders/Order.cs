@@ -28,6 +28,7 @@ namespace Ecom.Core.Entities.Orders
         public IReadOnlyList<OrderItem> OrderItem { get; set; }
         public decimal SubTotal { get; set; }
         public OrderStatus OrderStatus { get; set; } = OrderStatus.Pending;
+        public string PaymentIntentId { get; set; }
 
         public decimal GetTotal()
         {

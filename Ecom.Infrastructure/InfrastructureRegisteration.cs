@@ -28,6 +28,10 @@ namespace Ecom.Infrastructure
             // Configure TokenServices
             services.AddScoped<ITokenServices, TokenServices>();
 
+            // Cofigure Payment getway
+            services.AddScoped<IPaymentServices, PaymentServices>();
+
+
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             //services.AddScoped<ICategoryRepository,CategoryRepository>();
             //services.AddScoped<IProductRepository, ProductRepository>();
