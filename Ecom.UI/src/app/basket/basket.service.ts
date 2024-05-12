@@ -17,6 +17,19 @@ export class BasketService {
   private basketTotalSource = new BehaviorSubject<IBasketTotals>(null);
   basketTotal$ = this.basketTotalSource.asObservable();
 
+
+
+  constructor(private http: HttpClient) {
+  }
+
+  setShippingPrice(deliveryMethod: IDeliveryMethod) {
+    this.shipping = deliveryMethod.price
+    const basket = this.getCurrentBasketValue()
+    basket.deliveryMethodId = deliveryMethod.id
+    this.calculateTotal();
+    this.setBasket(basket);
+  }
+
   private calculateTotal() {
     const basket = this.getCurrentBasketValue();
     const shipping = this.shipping;
@@ -25,14 +38,6 @@ export class BasketService {
     }, 0);
     const total = shipping + subTotal;
     this.basketTotalSource.next({ shipping, subTotal, total });
-  }
-
-  constructor(private http: HttpClient) {
-  }
-
-  setShippingPrice(deliveryMethod:IDeliveryMethod){
-this.shipping = deliveryMethod.price
-this.calculateTotal()
   }
 
   getBasket(id: string) {
@@ -135,11 +140,11 @@ this.calculateTotal()
     }
   }
 
-deleteLocalBasket(id:string){
-this.basketSource.next(null)
-this.basketTotalSource.next(null)
-localStorage.removeItem('basket_id')
-}
+  deleteLocalBasket(id: string) {
+    this.basketSource.next(null)
+    this.basketTotalSource.next(null)
+    localStorage.removeItem('basket_id')
+  }
 
   deleteBasket(basket: IBasket) {
     return this.http.delete(this.BaseUrl + 'Basket/Delete-basket-item/' + basket.id)
