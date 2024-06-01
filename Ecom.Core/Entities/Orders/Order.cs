@@ -12,13 +12,15 @@ namespace Ecom.Core.Entities.Orders
         {
             
         }
-        public Order(string buyerEmail, ShipAddress shipToAddress, DeliveryMethod deliveryMethod, IReadOnlyList<OrderItem> orderItem, decimal subTotal)
+        public Order(string buyerEmail, ShipAddress shipToAddress, DeliveryMethod deliveryMethod,
+            IReadOnlyList<OrderItem> orderItem, decimal subTotal,string paymentIntentId)
         {
             BuyerEmail = buyerEmail;
             ShipToAddress = shipToAddress;
             DeliveryMethod = deliveryMethod;
             OrderItem = orderItem;
             SubTotal = subTotal;
+            PaymentIntentId = paymentIntentId;
         }
 
         public string BuyerEmail { get; set; }

@@ -6,6 +6,7 @@
         class="btn btn-outline-success">Save as default address</button>
     </div>
     <div class="row " [formGroup]="addressForm">
+        <!-- firstName -->
         <div class="form-group col-6 mb-3">
             <div class="form-floating">
                 <input type="text" formControlName="firstName" class="form-control" placeholder="First Name"
@@ -74,7 +75,7 @@
         <button class="btn btn-dark" routerLink="/basket">
             <i class="fa fa-angle-left mr-2"> Back to basket</i>
         </button>
-        <button class="btn btn-primary" cdkStepperNext>
+        <button [disabled]="checkoutForm.get('addressForm').invalid" class="btn btn-primary" cdkStepperNext>
             Go To Delivery <li class="fa fa-angle-right"></li>
         </button>
     </div>

@@ -9,7 +9,7 @@ import { IAddress } from '../shared/Models/address';
   providedIn: 'root'
 })
 export class AccountService {
-  BaseUrl = "https://localhost:7104/api/"
+  BaseUrl = "https://localhost:44394/api/"
   // private currentUser = new BehaviorSubject<IUser>(null);
   private currentUser = new ReplaySubject<IUser>(1);
 

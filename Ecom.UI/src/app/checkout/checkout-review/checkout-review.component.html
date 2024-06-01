@@ -4,7 +4,8 @@
     <button class="btn btn-dark" cdkStepperPrevious>
         <i class="fa fa-angle-left mr-2"> Back to Delivery</i>
     </button>
-    <button class="btn btn-primary" cdkStepperNext>
+    <!-- cdkStepperNext -->
+    <button class="btn btn-primary" (click)="createPaymentIntent()"> 
         Go To Payment <li class="fa fa-angle-right"></li>
     </button>
 </div>

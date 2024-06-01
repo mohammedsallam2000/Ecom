@@ -6,3 +6,12 @@ export interface IProducts {
     description: any
     price: number
   }
+
+
+  export interface IProductsCreate {
+    name: string
+    description: string
+    price: number
+    categoryId: string
+    image: File
+  }

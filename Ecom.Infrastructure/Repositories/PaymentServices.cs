@@ -32,6 +32,9 @@ namespace Ecom.Infrastructure.Repositories
             var basket = await unitOfWork.BasketRepository.GetCustomerBasketAsenc(basketId);
             var shippingPrice = 0m;
 
+            if (basket == null)
+                return null;
+
             if(basket.DeliveryMethodId.HasValue)
             {
                 var deliveryMethod = await applicationDbContext.DeliveryMethods.Where(x => x.Id == basket.DeliveryMethodId.Value).FirstOrDefaultAsync();

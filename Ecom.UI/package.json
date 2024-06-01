@@ -23,6 +23,7 @@
     "@angular/platform-server": "^17.0.0",
     "@angular/router": "^17.0.0",
     "@angular/ssr": "^17.0.8",
+    "@stripe/stripe-js": "^3.4.0",
     "angular-uuid": "^0.0.4",
     "bootstrap": "^5.3.2",
     "bootswatch": "^5.3.2",

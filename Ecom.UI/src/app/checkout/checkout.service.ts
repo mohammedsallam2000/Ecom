@@ -8,7 +8,7 @@ import { IOrderToCreate } from '../shared/Models/order';
   providedIn: 'root'
 })
 export class CheckoutService {
-  BaseUrl = "https://localhost:7104/api/"
+  BaseUrl = "https://localhost:44394/api/"
   constructor(private http: HttpClient) { }
 
   GetHeaderToken(){

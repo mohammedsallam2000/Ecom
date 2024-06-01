@@ -11,7 +11,7 @@ import { IProducts } from '../shared/Models/Products';
   providedIn: 'root'
 })
 export class ShopService {
-  BaseUrl = "https://localhost:7104/api/"
+  BaseUrl = "https://localhost:44394/api/"
 
   constructor(private _HttpClient: HttpClient) { }
 

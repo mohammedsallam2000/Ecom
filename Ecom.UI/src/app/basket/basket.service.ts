@@ -10,7 +10,7 @@ import { IDeliveryMethod } from '../shared/Models/deliveryMethod';
   providedIn: 'root'
 })
 export class BasketService {
-  BaseUrl = "https://localhost:7104/api/"
+  BaseUrl = "https://localhost:44394/api/"
   private basketSource = new BehaviorSubject<IBasket>(null);
   basket$ = this.basketSource.asObservable();
   shipping: number = 0
@@ -22,10 +22,20 @@ export class BasketService {
   constructor(private http: HttpClient) {
   }
 
+  createPaymentIntent(){
+    return this.http.post(this.BaseUrl+'Payments/'+this.getCurrentBasketValue().id,{}).pipe(
+      map((basket:IBasket)=>{
+        this.basketSource.next(basket);
+        console.log(this.getCurrentBasketValue())
+      })
+    )
+  }
+
   setShippingPrice(deliveryMethod: IDeliveryMethod) {
     this.shipping = deliveryMethod.price
     const basket = this.getCurrentBasketValue()
     basket.deliveryMethodId = deliveryMethod.id
+    basket.shippingPrice = deliveryMethod.price;
     this.calculateTotal();
     this.setBasket(basket);
   }
@@ -45,6 +55,7 @@ export class BasketService {
       .pipe(
         map((basket: IBasket) => {
           this.basketSource.next(basket)
+          this.shipping = basket.shippingPrice
           //console.info(this.getCurrentBasketValue())
           this.calculateTotal();
         })

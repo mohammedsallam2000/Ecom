@@ -22,5 +22,6 @@ namespace Ecom.Core.Entities
         public int? DeliveryMethodId { get; set; }
         public string ClientSecrete { get; set; }
         public string PaymentIntentId { get; set; }
+        public decimal shippingPrice { get; set; }
     }
 }

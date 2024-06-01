@@ -1,26 +1,138 @@
-
 <div class="container mt-3 mb-3">
-    <button class="btn btn-primary">Create</button>
-    <table class="table table-hover table-striped mt-3 mb-3">
-        <thead >
-          <tr >
-            <th >Name</th>
-            <th >Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Mark</td>
-            <td><button class="btn btn-secondary">Edit</button> | <button class="btn btn-danger">Delete</button></td>
-          </tr>
-          <tr>
-            <td>Jacob</td>
-            <td><button class="btn btn-info">Edit</button> | <button class="btn btn-danger">Delete</button></td>
-          </tr>
-          <tr>
-            <td >Larry the Bird</td>
-            <td><button class="btn btn-info">Edit</button> | <button class="btn btn-danger">Delete</button></td>
-          </tr>
-        </tbody>
-      </table>
+  <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Create new Category</button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Create new Category</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body m-2" [formGroup]="CategoryForm">
+          <form [formGroup]="createForm">
+            <!-- Name -->
+            <div class="form-floating mb-2">
+              <input formControlName="name" type="text" class="form-control" placeholder="Name"
+                [class.is-invalid]="_name.invalid && _name.touched" [class.is-valid]="_name.valid">
+              <label for="floatingInput">Name</label>
+              <small class="text-danger" [class.d-none]="_name.valid || _name.untouched">*Name is required</small>
+            </div>
+
+            <!-- Description -->
+            <div class="form-floating mb-2">
+              <input formControlName="description" type="text" class="form-control" placeholder="description"
+                [class.is-invalid]="_description.invalid && _description.touched" [class.is-valid]="_description.valid">
+              <label for="floatingInput">Description</label>
+
+              <small class="text-danger" [class.d-none]="_description.valid || _description.untouched">*Description is
+                required</small>
+            </div>
+
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-success" [disabled]="createForm.invalid"
+            (click)="onSubmitCreate()">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <table class="table table-hover table-striped mt-3 mb-3 text-center">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of categories">
+        <td>{{item.name}}</td>
+        <td>{{item.description}}</td>
+
+        <td><button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#editModal"
+            (click)="FillRowData(item)">Edit</button> | <button class="btn btn-danger" data-bs-toggle="modal"
+            data-bs-target="#deleteModal" (click)="FillRowData(item)">Delete</button></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- EditModal -->
+  <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="editModalLabel">Edit Category</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body m-2" [formGroup]="CategoryForm">
+          <form [formGroup]="createForm">
+            <input hidden formControlName="id" [value]="RowData.id" type="text" class="form-control" placeholder="Name">
+            <!-- Name -->
+            <div class="form-floating mb-2">
+              <input formControlName="name" [value]="RowData.name" type="text" class="form-control" placeholder="Name"
+                [class.is-invalid]="_name.invalid && _name.touched" [class.is-valid]="_name.valid">
+              <label for="floatingInput">Name</label>
+              <small class="text-danger" [class.d-none]="_name.valid || _name.untouched">*Name is required</small>
+            </div>
+
+            <!-- Description -->
+            <div class="form-floating mb-2">
+              <input formControlName="description" type="text" [value]="RowData.description" class="form-control" placeholder="description"
+                [class.is-invalid]="_description.invalid && _description.touched" [class.is-valid]="_description.valid">
+              <label for="floatingInput">Description</label>
+
+              <small class="text-danger" [class.d-none]="_description.valid || _description.untouched">*Description is
+                required</small>
+            </div>
+
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-success" [disabled]="createForm.invalid"
+            (click)="onSubmitCreate()">Edit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- deleteModal -->
+  <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5 text-danger" id="deleteModalLabel">Are you sure to delete this row ?!</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body m-2" [formGroup]="CategoryForm">
+          <table class="table table-hover table-striped mt-3 mb-3 ">
+            <tbody>
+              <tr>
+                <td class="td">Id</td>
+                <td>{{RowData.id}}</td>
+              </tr>
+              <tr>
+                <td class="td">Name</td>
+                <td>{{RowData.name}}</td>
+              </tr>
+              <tr>
+                <td class="td">Description</td>
+                <td>{{RowData.description}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+            (click)="onSubmitDelete()">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

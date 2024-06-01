@@ -1,42 +1,107 @@
-
 <div class="container mt-3 mb-3">
-    <button class="btn btn-primary">Create</button>
-    <table class="table table-hover table-striped mt-3 mb-3">
-        <thead >
-          <tr >
-            <th >Picture</th>
-            <th >Name</th>
-            <th >Category</th>
-            <th >Price</th>
-            <th >Description</th>
-            <th >Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Mark</td>
-            <td>Mark</td>
-            <td>Mark</td>
-            <td>Mark</td>
-            <td>Mark</td>
-            <td><button class="btn btn-secondary">Edit</button> | <button class="btn btn-danger">Delete</button></td>
-          </tr>
-          <tr>
-            <td>Mark</td>
-            <td>Mark</td>
-            <td>Mark</td>
-            <td>Mark</td>
-            <td>Mark</td>
-            <td><button class="btn btn-info">Edit</button> | <button class="btn btn-danger">Delete</button></td>
-          </tr>
-          <tr>
-            <td>Mark</td>
-            <td>Mark</td>
-            <td>Mark</td>
-            <td>Mark</td>
-            <td>Mark</td>
-            <td><button class="btn btn-info">Edit</button> | <button class="btn btn-danger">Delete</button></td>
-          </tr>
-        </tbody>
-      </table>
+
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Create new Product
+  </button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Create new Product</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body m-2" [formGroup]="ProductForm">
+          <form [formGroup]="createForm">
+            <!-- Name -->
+            <div class="form-floating mb-2">
+              <input formControlName="name" type="text" class="form-control" placeholder="Name"
+                [class.is-invalid]="_name.invalid && _name.touched" [class.is-valid]="_name.valid">
+              <label for="floatingInput">Name</label>
+              <small class="text-danger" [class.d-none]="_name.valid || _name.untouched">*Name is required</small>
+            </div>
+
+            <!-- Description -->
+            <div class="form-floating mb-2">
+              <input formControlName="description" type="text" class="form-control" placeholder="description"
+                [class.is-invalid]="_description.invalid && _description.touched" [class.is-valid]="_description.valid">
+              <label for="floatingInput">Description</label>
+
+              <small class="text-danger" [class.d-none]="_description.valid || _description.untouched">*Description is required</small>
+            </div>
+
+
+            <!-- Price -->
+            <div class="form-floating mb-2">
+              <input formControlName="price" type="number" class="form-control" placeholder="Price"
+                [class.is-invalid]="_price.invalid && _price.touched" [class.is-valid]="_price.valid">
+              <label for="floatingInput">Price</label>
+              <small class="text-danger" [class.d-none]="_price.valid || _price.untouched">*Price is required</small>
+            </div>
+
+            <!-- Category -->
+            <div class=" mb-2">
+              <select formControlName="categoryId" class="form-control form-select" aria-label="Default select example">
+                <option selected>Select Category</option>
+                <option *ngFor="let item of categories" value="{{item.id}}">{{item.name}}</option>
+              </select>
+              <small class="text-danger" [class.d-none]="_categoryId.valid || _categoryId.untouched">*Category is required</small>
+            </div>
+ 
+
+            <!-- Picture -->
+            <div class=" mb-2">
+              <label for="formFile" class="form-label">Product Picture</label>
+              <input formControlName="image"  class="form-control" type="file" id="formFile"
+              [class.is-invalid]="_image.invalid && _image.touched" [class.is-valid]="_image.valid">
+              <small class="text-danger" [class.d-none]="_image.valid || _image.untouched">*Image is required</small>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-success" [disabled]="createForm.invalid" (click)="onSubmitCreate()">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <table class="table table-hover table-striped mt-3 mb-3 text-center">
+    <thead>
+      <tr>
+        <th>Picture</th>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Price</th>
+        <th>Description</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of products">
+        <td><img src="{{item.productPicture}}" width="50px" /></td>
+        <td>{{item.name}}</td>
+        <td>{{item.categoryName}}</td>
+        <td>{{item.price}}</td>
+        <td>{{item.description}}</td>
+        <td><button class="btn btn-secondary">Edit</button> | <button class="btn btn-danger">Delete</button></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="d-flex justify-content-center mt-3">
+    <!-- pager -->
+    <!-- <app-pager [totalCount]="totalCount" [pageSize]="shopParams.pageSize">
+        </app-pager> -->
+
+    <pagination *ngIf="totalCount>0" (pageChanged)="onPageChange($event.page)" [itemsPerPage]="shopParams.pageSize"
+      [boundaryLinks]="true" [totalItems]="totalCount" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;"
+      lastText="&raquo;">
+    </pagination>
+  </div>
 </div>

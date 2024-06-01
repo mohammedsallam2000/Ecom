@@ -5,6 +5,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { CdkStepperModule } from '@angular/cdk/stepper';
 import { AccountService } from '../../account/account.service';
 import { ToastrService } from 'ngx-toastr';
+import { IAddress } from '../../shared/Models/address';
 
 @Component({
   selector: 'app-checkout-address',
@@ -28,12 +29,12 @@ export class CheckoutAddressComponent implements OnInit {
 saveUserAddress(){
   let _currentAddress = this.addressForm.value
   this._AccountService.UpdateUserAddress(_currentAddress).subscribe({
-next:()=> {
-  //this._Toastr.success('Updated successfully')
+next:(address:IAddress)=> {
+  alert('Updated successfully');
+  this.checkoutForm.get('addressForm').reset(address)
 },
 error:(err)=> {
-  //this._Toastr.error(err)
-
+  console.error(err)
 },
   })
 }

@@ -15,11 +15,13 @@ namespace Ecom.Infrastructure.Repositories
     {
         private readonly IUnitOfWork uOW;
         private readonly ApplicationDbContext context;
+        private readonly IPaymentServices paymentServices;
 
-        public OrderServices(IUnitOfWork UOW, ApplicationDbContext context)
+        public OrderServices(IUnitOfWork UOW, ApplicationDbContext context,IPaymentServices paymentServices)
         {
             uOW = UOW;
             this.context = context;
+            this.paymentServices = paymentServices;
         }
         public async Task<Order> CreateOrderAsync(string buyerEmail, int delivryMethodId, string basketId, ShipAddress shipAddress)
         {
@@ -61,8 +63,18 @@ namespace Ecom.Infrastructure.Repositories
             // caluclate subTotal
             var subTotal = items.Sum(x => x.Price * x.Quantity);
 
+
+            //check if order exists
+            var exitingOrder = await context.Orders.Where(x=>x.PaymentIntentId == basket.PaymentIntentId).FirstOrDefaultAsync();
+
+            if (exitingOrder is not null)
+            {
+                 context.Orders.Remove(exitingOrder);
+                await paymentServices.CreateOrUpdatePayment(basket.PaymentIntentId);
+            }
+
             // initialization on ctor
-            var order = new Order(buyerEmail, shipAddress, deliveryMethod, items, subTotal);
+            var order = new Order(buyerEmail, shipAddress, deliveryMethod, items, subTotal,basket.PaymentIntentId);
 
             //check order is not null
             if(order is null) return null;
@@ -72,7 +84,7 @@ namespace Ecom.Infrastructure.Repositories
             await context.SaveChangesAsync();
 
             //Remove Basket
-            await uOW.BasketRepository.DeleteBasketAsenc(basketId);
+            //await uOW.BasketRepository.DeleteBasketAsenc(basketId);
 
             return order;
         }

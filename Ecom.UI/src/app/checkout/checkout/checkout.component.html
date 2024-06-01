@@ -6,7 +6,7 @@
                 <div cdkStep class="custom-step" label="Delivery"><app-checkout-delivery></app-checkout-delivery></div>
                 <div cdkStep class="custom-step" label="Step 3">Step 3</div>
               </div> -->
-            <app-stepper [linearModeSelected]="false" #appStepper>
+            <app-stepper [linearModeSelected]="true" #appStepper>
                 <cdk-step [label]="'Address'" [completed]="checkoutForm.get('addressForm').valid">
                     <app-checkout-address [checkoutForm]="checkoutForm"></app-checkout-address>
                 </cdk-step>
@@ -14,7 +14,7 @@
                     <app-checkout-delivery [checkoutForm]="checkoutForm"></app-checkout-delivery>
                 </cdk-step>
                 <cdk-step [label]="'Review'">
-                    <app-checkout-review></app-checkout-review>
+                    <app-checkout-review [appStepper]="appStepper"></app-checkout-review>
                 </cdk-step>
                 <cdk-step [label]="'Payment'" [completed]="checkoutForm.get('paymentForm').valid">
                     <app-checkout-payment [checkoutForm]="checkoutForm"></app-checkout-payment>

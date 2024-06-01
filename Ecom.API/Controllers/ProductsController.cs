@@ -56,7 +56,7 @@ namespace Ecom.API.Controllers
 
 
         [HttpPost("Add-new-Product")]
-        public async Task<ActionResult> Post([FromForm]CreateProductDto model)
+        public async Task<ActionResult> AddNewProduct([FromForm]CreateProductDto model)
         {
             try
             {
