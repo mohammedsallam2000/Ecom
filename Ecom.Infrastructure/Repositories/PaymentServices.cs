@@ -1,4 +1,5 @@
 ﻿using Ecom.Core.Entities;
+using Ecom.Core.Entities.Orders;
 using Ecom.Core.Interfaces;
 using Ecom.Core.Services;
 using Ecom.Infrastructure.Data;
@@ -81,6 +82,26 @@ namespace Ecom.Infrastructure.Repositories
 
             await unitOfWork.BasketRepository.UpdateBasketAsenc(basket);
             return basket;
+        }
+
+        public async Task<Order> UpdateOrderPaymentFailed(string paymentIntentId)
+        {
+            var order = await applicationDbContext.Orders.Where(x=>x.PaymentIntentId == paymentIntentId).FirstOrDefaultAsync();
+            if (order == null)
+                return null;
+            order.OrderStatus = OrderStatus.PaymentFaild;
+            await applicationDbContext.SaveChangesAsync();
+            return order;
+        }
+
+        public async Task<Order> UpdateOrderPaymentSucceeded(string paymentIntentId)
+        {
+            var order = await applicationDbContext.Orders.Where(x => x.PaymentIntentId == paymentIntentId).FirstOrDefaultAsync();
+            if (order == null)
+                return null;
+            order.OrderStatus = OrderStatus.PaymentRecieved;
+            await applicationDbContext.SaveChangesAsync();
+            return order;
         }
     }
 }

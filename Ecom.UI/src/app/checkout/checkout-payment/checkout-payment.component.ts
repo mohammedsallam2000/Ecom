@@ -102,13 +102,17 @@ switch(event.elementType){
   async submitOrder() {
     this.loading = true;
     const basket = this._BasketService.getCurrentBasketValue()
-
+    // const basket = this._BasketService.getCurrentBasketValue()
+    // if(!basket){
+    //   throw new error('This Basketcan not found');
+    // }
     try {
       const createOrder = await this.createOrder(basket);
       const paymentResult = await this.confirmPaymentWithStripe(basket);
 
       if (paymentResult.paymentIntent) {
         console.log('Order submit successfully')
+        // this._BasketService.deleteBasket(basket)
 
         this._BasketService.deleteLocalBasket(basket.id)
         const navigationExtras: NavigationExtras = { state: createOrder }
