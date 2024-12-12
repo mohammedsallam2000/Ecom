@@ -76,6 +76,7 @@ FillRowData(Item: any) {
   this.RowData.id = Item.id;
   this.RowData.name = Item.name;
   this.RowData.description = Item.description;
+  this.editForm.patchValue(this.RowData)
 }
 
 onSubmitDelete() {
@@ -94,6 +95,21 @@ onSubmitDelete() {
   })
 
 }
+
+
+// Edit
+onSubmitEdit() {
+  console.log('editForm',this.editForm.value)
+
+  this._AdminService.editCategory(this.editForm.value).subscribe({
+    next:()=>{alert('Edited success')
+    this.GetCategories();
+
+  },
+    error:(err)=>{console.log(err)}
+  })
+}
+
 
 // Get All Categories
   GetCategories() {

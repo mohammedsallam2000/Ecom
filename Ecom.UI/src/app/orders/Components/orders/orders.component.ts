@@ -24,12 +24,17 @@ export class OrdersComponent implements OnInit {
   getOrders(){
     this._OrdersService.getOrdersForUser().subscribe({
       next:(order:IOrder[]) =>{
+        if(order.length > 0)
         this.Orders = order;
+        else
+        this.Orders = null
+
       },
       error:(err)=> {
         console.error(err);
       },
     })
+    
   }
 
 }

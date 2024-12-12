@@ -69,7 +69,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body m-2" [formGroup]="CategoryForm">
-          <form [formGroup]="createForm">
+          <form [formGroup]="editForm">
             <input hidden formControlName="id" [value]="RowData.id" type="text" class="form-control" placeholder="Name">
             <!-- Name -->
             <div class="form-floating mb-2">
@@ -93,8 +93,8 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-success" [disabled]="createForm.invalid"
-            (click)="onSubmitCreate()">Edit</button>
+          <button type="button" class="btn btn-success" [disabled]="editForm.invalid"
+            (click)="onSubmitEdit()">Edit</button>
         </div>
       </div>
     </div>

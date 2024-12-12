@@ -4,11 +4,14 @@
     <img src="../../../assets/Photos/logo.jpg" [routerLink]="['/']" width="70px" />
   </a>
 
-  <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+  <ul class="nav col-14 col-md-auto mb-2 justify-content-center mb-md-0">
     <li><a class="nav-link px-2 " [routerLink]="['/']" routerLinkActive="active">Home</a></li>
     <li><a class="nav-link px-2 " [routerLink]="['shop']" routerLinkActive="active">Shop</a></li>
     <li><a class="nav-link px-2 " [routerLink]="['About']">About</a></li>
     <li><a class="nav-link px-2 " [routerLink]="['Contact']">Contact</a></li>
+    <li><a class="nav-link px-2 " *ngIf="(currentUser$ | async) && (currentUser$ | async).displayName == 'Mohammed Sallam'" [routerLink]="['admin/products']">Products</a></li>
+    <li><a class="nav-link px-2 " *ngIf="(currentUser$ | async) && (currentUser$ | async).displayName == 'Mohammed Sallam'"  [routerLink]="['admin/categories']">Categories</a></li>
+
     <li><a class="nav-link px-2 " [routerLink]="['/orders']" *ngIf="(currentUser$ | async)">Orders</a></li>
     <!-- <li><a class="nav-link px-2 " [routerLink]="['testError']">Errors</a></li> -->
   </ul>

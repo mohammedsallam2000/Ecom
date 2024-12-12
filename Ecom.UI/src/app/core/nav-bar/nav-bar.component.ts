@@ -28,6 +28,7 @@ constructor (private basketService:BasketService,private accountService:AccountS
 ngOnInit():void{
   this.basket$ = this.basketService.basket$;
   this.currentUser$ = this.accountService.currentUser$;
+  console.log(this.currentUser$)
 }
 
 logOut(){
